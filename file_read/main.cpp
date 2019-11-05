@@ -10,6 +10,8 @@ int main(int argc, char* argv[]) {
 
   getline(ifs, test_word1);
   getline(ifs, test_word2);
+  getline(ifs, test_word1);
+  getline(ifs, test_word2);
 
   cout<<test_word1<<endl<<test_word2<<endl;
 
