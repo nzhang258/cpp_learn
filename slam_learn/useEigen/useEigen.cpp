@@ -38,7 +38,46 @@ int main()
   Eigen::Matrix<double,2,1> res = mat_23f.cast<double>() * v_3d;
   
   Eigen::Matrix<float,2,1> res2 = mat_23f * v_3f;
+  cout<<res<<endl;
+  cout<<res2<<endl;
+
+  //随机数矩阵
+  mat_33d = Eigen::Matrix3d::Random();
+  cout<<"随机数矩阵"<<endl;
+  cout<<mat_33d<<endl<<endl;
+  cout<<"转置"<<endl;
+  cout<<mat_33d.transpose()<<endl;
+  cout<<"求和"<<endl;
+  cout<<mat_33d.sum()<<endl;
+  cout<<"迹"<<endl;
+  cout<<mat_33d.trace()<<endl;
+  cout<<"数乘10"<<endl;
+  cout<<10*mat_33d<<endl;
+  cout<<"逆"<<endl;
+  cout<<mat_33d.inverse()<<endl;
+  cout<<"行列式"<<endl;
+  cout<<mat_33d.determinant()<<endl;
+
+  //特征值和特征向量
+  Eigen::SelfAdjointEigenSolver<Eigen::Matrix3d> eigen_solver(mat_33d.transpose()*mat_33d);
+  cout<<"Eigen values = \n" <<eigen_solver.eigenvalues()<<endl;
+  cout<<"Eigen vectors = \n"<<eigen_solver.eigenvectors()<<endl;
+
   
+  //求解方程
+  Eigen::Matrix<double, MATRIX_SIZE, MATRIX_SIZE> mat_NNd;
+  mat_NNd = Eigen::MatrixXd::Random(MATRIX_SIZE,MATRIX_SIZE);
+  Eigen::Matrix<double,MATRIX_SIZE,1> v_Nd;
+  v_Nd = Eigen::MatrixXd::Random(MATRIX_SIZE,1);
+  
+  clock_t time_stt = clock();
+  //直接求逆
+  Eigen::Matrix<double,MATRIX_SIZE,1> x = mat_NNd.inverse()*v_Nd;
+  cout<<"直接求逆时间为"<<1000*(clock()-time_stt)/(double)CLOCKS_PER_SEC<<"ms"<<endl;
+  //矩阵分解，如QR分解
+  time_stt = clock();
+  x = mat_NNd.colPivHouseholderQr().solve(v_Nd);
+  cout<<"矩阵分解时间为"<<1000*(clock()-time_stt)/(double)CLOCKS_PER_SEC<<"ms"<<endl;
 
   return 0;
 
